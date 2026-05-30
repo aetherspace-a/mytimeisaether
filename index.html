@@ -1,119 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Aether | Liquid</title>
-<style>
-:root {
-  --glass: rgba(255, 255, 255, 0.08);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --accent: #34c759;
-  --bg: #050705;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aether | Apple Aesthetic</title>
+    <style>
+        :root {
+            --accent: #32d74b;
+            --bg: #030805;
+            --glass: rgba(255, 255, 255, 0.07);
+        }
 
-body {
-  margin: 0; padding: 20px;
-  background: var(--bg);
-  color: white;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  display: flex; justify-content: center; align-items: center; min-height: 100vh;
-}
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
 
-.container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 20px; }
+        /* Glass Container */
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            padding: 32px;
+            width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
 
-/* The "Apple" Glass Effect */
-.glass {
-  background: var(--glass);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid var(--glass-border);
-  border-radius: 24px;
-  padding: 24px;
-  position: relative;
-  overflow: hidden;
-}
-/* Inner light reflection for depth */
-.glass::before {
-  content: ""; position: absolute; inset: 0;
-  border-radius: inherit;
-  border: 1px solid rgba(255,255,255,0.1);
-  pointer-events: none;
-}
+        /* Clock */
+        .time-group { text-align: center; }
+        .time { font-size: 72px; font-weight: 200; letter-spacing: -3px; }
+        .date { color: var(--accent); font-weight: 500; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .seconds-track {
+            height: 3px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .seconds-bar { height: 100%; background: var(--accent); width: 0%; transition: width 0.1s linear; }
 
-/* Clock Section */
-.time { font-size: 64px; font-weight: 200; letter-spacing: -2px; margin: 4px 0; }
-.date { font-size: 13px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-
-/* Profile Section */
-.profile { display: flex; align-items: center; gap: 16px; }
-.avatar { width: 56px; height: 56px; border-radius: 16px; background: #1a2a1a; overflow: hidden; }
-.avatar img { width: 100%; height: 100%; object-fit: cover; }
-
-/* Quote Section */
-#quote { font-size: 15px; font-style: italic; opacity: 0.8; transition: opacity 0.5s ease; min-height: 40px; }
-
-/* Links Section */
-.link-item {
-  display: flex; align-items: center; gap: 16px;
-  padding: 16px; border-radius: 16px;
-  background: rgba(255,255,255,0.03);
-  text-decoration: none; color: white;
-  transition: background 0.3s ease;
-}
-.link-item:hover { background: rgba(255,255,255,0.08); }
-.icon-box { width: 32px; height: 32px; fill: var(--accent); }
-</style>
+        /* Profile */
+        .profile { display: flex; align-items: center; gap: 16px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+        .avatar { width: 60px; height: 60px; border-radius: 18px; overflow: hidden; background: #222; }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* Links */
+        .links { display: flex; flex-direction: column; gap: 12px; }
+        .link {
+            display: flex; align-items: center; gap: 12px;
+            background: rgba(255,255,255,0.05);
+            padding: 12px 16px; border-radius: 16px;
+            text-decoration: none; color: white;
+            font-size: 14px; border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
+        }
+        .link:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
+        .icon { width: 20px; height: 20px; color: var(--accent); }
+    </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="glass">
-    <div class="date" id="date"></div>
-    <div class="time" id="time"></div>
-  </div>
+    <div class="card">
+        <div class="time-group">
+            <div class="date" id="date">--</div>
+            <div class="time" id="time">--:--</div>
+            <div class="seconds-track"><div class="seconds-bar" id="bar"></div></div>
+        </div>
 
-  <div class="glass profile">
-    <div class="avatar"><img src="https://cdn.discordapp.com/attachments/1145203205135945768/1510147976176336986/97889-colorful-skyline-boy.png" alt="Profile"></div>
-    <div>
-      <div style="font-weight: 500;">Aether</div>
-      <div style="font-size: 13px; color: rgba(255,255,255,0.5);">Aviation & Community Builder</div>
+        <div class="profile">
+            <div class="avatar"><img src="https://cdn.discordapp.com/attachments/1145203205135945768/1510147976176336986/97889-colorful-skyline-boy.png" alt="Aether"></div>
+            <div>
+                <div style="font-weight: 600;">Aether</div>
+                <div style="font-size: 12px; opacity: 0.6;">Aviation & Community Builder</div>
+            </div>
+        </div>
+
+        <div class="links">
+            <a href="https://discord.gg/WsPMFdJsWp" class="link"><span>🔗</span> Discord Community</a>
+            <a href="https://guns.lol/aether_" class="link"><span>🌐</span> guns.lol / aether_</a>
+            <a href="https://avely.me/zeop" class="link"><span>👤</span> avely.me / zeop</a>
+        </div>
     </div>
-  </div>
 
-  <div class="glass">
-    <div id="quote">"The sky is not the limit."</div>
-  </div>
-
-  <a href="#" class="link-item">
-    <svg class="icon-box" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
-    <span>Discord Community</span>
-  </a>
-</div>
-
-<script>
-const quotes = ["The sky is not the limit.", "To fly is to live.", "Adventure is calling.", "Above the clouds."];
-let qIndex = 0;
-
-function updateUI() {
-  const now = new Date();
-  document.getElementById('time').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-  document.getElementById('date').innerText = now.toLocaleDateString([], {weekday: 'long', month: 'long', day: 'numeric'});
-}
-
-function rotateQuote() {
-  const el = document.getElementById('quote');
-  el.style.opacity = 0;
-  setTimeout(() => {
-    qIndex = (qIndex + 1) % quotes.length;
-    el.innerText = `"${quotes[qIndex]}"`;
-    el.style.opacity = 0.8;
-  }, 500);
-}
-
-setInterval(updateUI, 1000);
-setInterval(rotateQuote, 6000);
-updateUI();
-</script>
+    <script>
+        function update() {
+            const now = new Date();
+            document.getElementById('time').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            document.getElementById('date').innerText = now.toLocaleDateString([], {weekday: 'short', month: 'long', day: 'numeric'});
+            document.getElementById('bar').style.width = (now.getSeconds() / 60) * 100 + "%";
+        }
+        setInterval(update, 1000);
+        update();
+    </script>
 </body>
 </html>
