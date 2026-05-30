@@ -3,41 +3,29 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>Aether</title>
+<title>Aether | Liquid Green</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --bg: #050505;
-  --glass: rgba(255, 255, 255, 0.06);
+  --bg: #030804;
+  --glass: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.08);
-  --accent: #5e5ce6; /* Apple-style sophisticated indigo/blue */
+  --accent-green: #34c759;
   --text-main: rgba(255, 255, 255, 0.95);
   --text-sub: rgba(255, 255, 255, 0.5);
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{
-  width:100%;height:100%;
+  width:100%;min-height:100vh;
   font-family:'Inter',system-ui,sans-serif;
-  background:var(--bg);
-  color:white;
+  background:var(--bg); color:white;
   display:flex;align-items:center;justify-content:center;
-  overflow:hidden;
+  padding: 20px;
 }
 
-/* Atmospheric Background */
-.bg-gradient {
-  position:fixed;inset:0;z-index:0;
-  background: radial-gradient(circle at 50% -20%, #1a1a2e 0%, #050505 60%);
-}
+.stage { width:100%; max-width:400px; display:flex;flex-direction:column;gap:16px; }
 
-.stage {
-  position:relative;z-index:10;
-  width:min(380px, 90vw);
-  display:flex;flex-direction:column;gap:16px;
-}
-
-/* Apple-esque Glass */
 .g-card {
   background: var(--glass);
   backdrop-filter: blur(40px) saturate(180%);
@@ -45,65 +33,96 @@ html,body{
   border: 1px solid var(--glass-border);
   border-radius: 28px;
   padding: 24px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
-/* Typography refinements */
-.time-wrap { font-weight: 200; font-size: 64px; letter-spacing: -0.02em; }
-.ampm { font-size: 12px; font-weight: 500; color: var(--text-sub); }
+/* Clock */
+.time-wrap { font-weight: 200; font-size: 56px; letter-spacing: -0.02em; }
+.date-txt { font-size: 13px; color: var(--accent-green); font-weight: 500; text-transform: uppercase; }
 
+/* Quote */
+#qtxt { min-height: 50px; font-style: italic; opacity: 1; transition: opacity 0.5s ease; }
+
+/* Profile */
+.profile { display: flex; align-items: center; gap: 16px; }
+.av { width: 60px; height: 60px; border-radius: 20px; overflow: hidden; background: #1a2e1e; }
+.av img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Links */
+.links { display: flex; flex-direction: column; gap: 12px; }
 .lnk {
   display: flex; align-items: center; gap: 16px;
-  padding: 16px; border-radius: 20px;
+  padding: 14px 20px; border-radius: 20px;
   background: rgba(255,255,255,0.03);
   text-decoration: none; color: white;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.05);
 }
-.lnk:hover { background: rgba(255,255,255,0.08); transform: scale(1.02); }
-
-.ico {
-  width: 40px; height: 40px; border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  background: rgba(255,255,255,0.1);
-}
-
-/* Subtle accent for status */
-.s-dot { width: 8px; height: 8px; border-radius: 50%; background: #32d74b; box-shadow: 0 0 10px #32d74b; }
+.lnk:hover { background: rgba(255,255,255,0.08); border-color: var(--accent-green); }
+.ico { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--accent-green); }
 </style>
 </head>
 <body>
-<div class="bg-gradient"></div>
 
 <div class="stage">
   <div class="g-card">
+    <div class="date-txt" id="dt">Saturday · May 30</div>
     <div class="time-wrap" id="time">00:00</div>
-    <div class="ampm" id="date">Saturday, May 30</div>
   </div>
 
-  <div class="g-card">
-    <div style="font-size: 14px; line-height: 1.6; color: var(--text-sub);">
-      "The beauty of a thing is not in the object itself, but in the perspective of the beholder."
+  <div class="g-card profile">
+    <div class="av"><img src="https://cdn.discordapp.com/attachments/1145203205135945768/1510147976176336986/97889-colorful-skyline-boy.png" alt="Aether"></div>
+    <div>
+      <div style="font-weight: 500;">Aether</div>
+      <div style="font-size: 12px; color: var(--text-sub);">Aviation & community builder</div>
     </div>
   </div>
 
+  <div class="g-card">
+    <div id="qtxt" style="font-size: 14px; line-height: 1.5; color: var(--text-main);">"The sky is not the limit."</div>
+    <div id="qauth" style="margin-top:8px; font-size: 10px; color: var(--accent-green); text-transform: uppercase;">— Unknown</div>
+  </div>
+
   <div class="links">
-    <a class="lnk" href="#">
-      <div class="ico">D</div>
-      <div>
-        <div style="font-size: 14px;">Discord Community</div>
-        <div style="font-size: 12px; color: var(--text-sub);">Join the flight group</div>
-      </div>
+    <a class="lnk" href="https://discord.gg/WsPMFdJsWp" target="_blank">
+      <div class="ico">D</div> <div>Discord</div>
+    </a>
+    <a class="lnk" href="https://guns.lol/aether_" target="_blank">
+      <div class="ico">G</div> <div>guns.lol / aether_</div>
+    </a>
+    <a class="lnk" href="https://avely.me/zeop" target="_blank">
+      <div class="ico">A</div> <div>avely.me / zeop</div>
     </a>
   </div>
 </div>
 
 <script>
+const QUOTES=[
+  {t:"The sky is not the limit — it's just the beginning.",a:"Unknown"},
+  {t:"To fly is to live. Everything else is just waiting.",a:"Unknown"},
+  {t:"Adventure is worthwhile in itself.",a:"Amelia Earhart"}
+];
+
 function update() {
   const n = new Date();
   document.getElementById('time').textContent = n.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-  document.getElementById('date').textContent = n.toLocaleDateString([], {weekday: 'long', month: 'long', day: 'numeric'});
+  document.getElementById('dt').textContent = n.toLocaleDateString([], {weekday: 'long'}) + ' · ' + n.toLocaleDateString([], {month: 'short', day: 'numeric'});
 }
+
+let i = 0;
+function rotateQuote() {
+  const el = document.getElementById('qtxt');
+  el.style.opacity = 0;
+  setTimeout(() => {
+    i = (i + 1) % QUOTES.length;
+    el.textContent = `"${QUOTES[i].t}"`;
+    document.getElementById('qauth').textContent = `— ${QUOTES[i].a}`;
+    el.style.opacity = 1;
+  }, 500);
+}
+
 setInterval(update, 1000);
+setInterval(rotateQuote, 5000);
 update();
 </script>
 </body>
