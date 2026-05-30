@@ -2,128 +2,118 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>Aether | Liquid Green</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Aether | Liquid</title>
 <style>
 :root {
-  --bg: #030804;
-  --glass: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --accent-green: #34c759;
-  --text-main: rgba(255, 255, 255, 0.95);
-  --text-sub: rgba(255, 255, 255, 0.5);
+  --glass: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --accent: #34c759;
+  --bg: #050705;
 }
 
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{
-  width:100%;min-height:100vh;
-  font-family:'Inter',system-ui,sans-serif;
-  background:var(--bg); color:white;
-  display:flex;align-items:center;justify-content:center;
-  padding: 20px;
+body {
+  margin: 0; padding: 20px;
+  background: var(--bg);
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  display: flex; justify-content: center; align-items: center; min-height: 100vh;
 }
 
-.stage { width:100%; max-width:400px; display:flex;flex-direction:column;gap:16px; }
+.container { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 20px; }
 
-.g-card {
+/* The "Apple" Glass Effect */
+.glass {
   background: var(--glass);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid var(--glass-border);
-  border-radius: 28px;
+  border-radius: 24px;
   padding: 24px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  position: relative;
+  overflow: hidden;
+}
+/* Inner light reflection for depth */
+.glass::before {
+  content: ""; position: absolute; inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(255,255,255,0.1);
+  pointer-events: none;
 }
 
-/* Clock */
-.time-wrap { font-weight: 200; font-size: 56px; letter-spacing: -0.02em; }
-.date-txt { font-size: 13px; color: var(--accent-green); font-weight: 500; text-transform: uppercase; }
+/* Clock Section */
+.time { font-size: 64px; font-weight: 200; letter-spacing: -2px; margin: 4px 0; }
+.date { font-size: 13px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
-/* Quote */
-#qtxt { min-height: 50px; font-style: italic; opacity: 1; transition: opacity 0.5s ease; }
-
-/* Profile */
+/* Profile Section */
 .profile { display: flex; align-items: center; gap: 16px; }
-.av { width: 60px; height: 60px; border-radius: 20px; overflow: hidden; background: #1a2e1e; }
-.av img { width: 100%; height: 100%; object-fit: cover; }
+.avatar { width: 56px; height: 56px; border-radius: 16px; background: #1a2a1a; overflow: hidden; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-/* Links */
-.links { display: flex; flex-direction: column; gap: 12px; }
-.lnk {
+/* Quote Section */
+#quote { font-size: 15px; font-style: italic; opacity: 0.8; transition: opacity 0.5s ease; min-height: 40px; }
+
+/* Links Section */
+.link-item {
   display: flex; align-items: center; gap: 16px;
-  padding: 14px 20px; border-radius: 20px;
+  padding: 16px; border-radius: 16px;
   background: rgba(255,255,255,0.03);
   text-decoration: none; color: white;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(255,255,255,0.05);
+  transition: background 0.3s ease;
 }
-.lnk:hover { background: rgba(255,255,255,0.08); border-color: var(--accent-green); }
-.ico { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--accent-green); }
+.link-item:hover { background: rgba(255,255,255,0.08); }
+.icon-box { width: 32px; height: 32px; fill: var(--accent); }
 </style>
 </head>
 <body>
 
-<div class="stage">
-  <div class="g-card">
-    <div class="date-txt" id="dt">Saturday · May 30</div>
-    <div class="time-wrap" id="time">00:00</div>
+<div class="container">
+  <div class="glass">
+    <div class="date" id="date"></div>
+    <div class="time" id="time"></div>
   </div>
 
-  <div class="g-card profile">
-    <div class="av"><img src="https://cdn.discordapp.com/attachments/1145203205135945768/1510147976176336986/97889-colorful-skyline-boy.png" alt="Aether"></div>
+  <div class="glass profile">
+    <div class="avatar"><img src="https://cdn.discordapp.com/attachments/1145203205135945768/1510147976176336986/97889-colorful-skyline-boy.png" alt="Profile"></div>
     <div>
       <div style="font-weight: 500;">Aether</div>
-      <div style="font-size: 12px; color: var(--text-sub);">Aviation & community builder</div>
+      <div style="font-size: 13px; color: rgba(255,255,255,0.5);">Aviation & Community Builder</div>
     </div>
   </div>
 
-  <div class="g-card">
-    <div id="qtxt" style="font-size: 14px; line-height: 1.5; color: var(--text-main);">"The sky is not the limit."</div>
-    <div id="qauth" style="margin-top:8px; font-size: 10px; color: var(--accent-green); text-transform: uppercase;">— Unknown</div>
+  <div class="glass">
+    <div id="quote">"The sky is not the limit."</div>
   </div>
 
-  <div class="links">
-    <a class="lnk" href="https://discord.gg/WsPMFdJsWp" target="_blank">
-      <div class="ico">D</div> <div>Discord</div>
-    </a>
-    <a class="lnk" href="https://guns.lol/aether_" target="_blank">
-      <div class="ico">G</div> <div>guns.lol / aether_</div>
-    </a>
-    <a class="lnk" href="https://avely.me/zeop" target="_blank">
-      <div class="ico">A</div> <div>avely.me / zeop</div>
-    </a>
-  </div>
+  <a href="#" class="link-item">
+    <svg class="icon-box" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+    <span>Discord Community</span>
+  </a>
 </div>
 
 <script>
-const QUOTES=[
-  {t:"The sky is not the limit — it's just the beginning.",a:"Unknown"},
-  {t:"To fly is to live. Everything else is just waiting.",a:"Unknown"},
-  {t:"Adventure is worthwhile in itself.",a:"Amelia Earhart"}
-];
+const quotes = ["The sky is not the limit.", "To fly is to live.", "Adventure is calling.", "Above the clouds."];
+let qIndex = 0;
 
-function update() {
-  const n = new Date();
-  document.getElementById('time').textContent = n.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-  document.getElementById('dt').textContent = n.toLocaleDateString([], {weekday: 'long'}) + ' · ' + n.toLocaleDateString([], {month: 'short', day: 'numeric'});
+function updateUI() {
+  const now = new Date();
+  document.getElementById('time').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  document.getElementById('date').innerText = now.toLocaleDateString([], {weekday: 'long', month: 'long', day: 'numeric'});
 }
 
-let i = 0;
 function rotateQuote() {
-  const el = document.getElementById('qtxt');
+  const el = document.getElementById('quote');
   el.style.opacity = 0;
   setTimeout(() => {
-    i = (i + 1) % QUOTES.length;
-    el.textContent = `"${QUOTES[i].t}"`;
-    document.getElementById('qauth').textContent = `— ${QUOTES[i].a}`;
-    el.style.opacity = 1;
+    qIndex = (qIndex + 1) % quotes.length;
+    el.innerText = `"${quotes[qIndex]}"`;
+    el.style.opacity = 0.8;
   }, 500);
 }
 
-setInterval(update, 1000);
-setInterval(rotateQuote, 5000);
-update();
+setInterval(updateUI, 1000);
+setInterval(rotateQuote, 6000);
+updateUI();
 </script>
 </body>
 </html>
