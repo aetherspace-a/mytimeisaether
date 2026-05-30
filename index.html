@@ -3,193 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
-    <title>Aether OS | Asiana PTFS</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <title>Aether OS | Liquid Glass Interface</title>
+
     <style>
-        /* =========================================================
-           AETHER OS v4.0 - DESIGN SYSTEM VARIABLES
-           =========================================================
-        */
-        :root[data-theme="light"] {
-            --bg-base: #f5f5f7;
-            --glass-bg: rgba(255, 255, 255, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.8);
-            --glass-shadow: 0 12px 48px rgba(0, 0, 0, 0.08);
-            --text-main: #1d1d1f;
-            --text-sub: #86868b;
-            --accent: #ff3b30;
-            --nav-bg: rgba(255, 255, 255, 0.8);
-        }
-        
-        :root[data-theme="dark"] {
-            --bg-base: #000000;
-            --glass-bg: rgba(28, 28, 30, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --glass-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
-            --text-main: #f5f5f7;
-            --text-sub: #a1a1a6;
-            --accent: #ff453a;
-            --nav-bg: rgba(20, 20, 22, 0.8);
+        /* ==========================================================================
+           1. SYSTEM DESIGN TOKENS
+           ========================================================================== */
+        :root {
+            --bg-deep: #020402;
+            --accent-green: #30d158;
+            --glass-panel: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-highlight: rgba(255, 255, 255, 0.2);
+            --text-main: #ffffff;
+            --text-sub: rgba(255, 255, 255, 0.5);
+            --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+            --ease-apple: cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        /* =========================================================
-           RESET & GLOBAL FOUNDATION
-           =========================================================
-        */
+        /* ==========================================================================
+           2. GLOBAL RESET
+           ========================================================================== */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
-        body {
-            background-color: var(--bg-base);
+        
+        body, html {
+            width: 100%; height: 100%;
+            background-color: var(--bg-deep);
             color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
-            transition: background 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-            overflow-x: hidden;
-        }
-
-        /* =========================================================
-           COMPOSITE GLASS COMPONENT LIBRARY
-           =========================================================
-        */
-        .apple-glass {
-            background: var(--glass-bg);
-            backdrop-filter: blur(40px) saturate(200%);
-            -webkit-backdrop-filter: blur(40px) saturate(200%);
-            border: 1px solid var(--glass-border);
-            border-radius: 32px;
-            box-shadow: var(--glass-shadow);
-            position: relative;
-        }
-
-        /* =========================================================
-           PARTICLE MESH ENGINE (Apple Ambient Logic)
-           =========================================================
-        */
-        .ambient-layer {
-            position: fixed; inset: 0; z-index: -2;
-            background: var(--bg-base);
+            font-family: var(--font-stack);
+            display: flex; justify-content: center; align-items: center;
             overflow: hidden;
-        }
-        .mesh-blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(140px);
-            opacity: 0.5;
-            animation: breathe 20s infinite alternate ease-in-out;
-        }
-        @keyframes breathe {
-            0% { transform: scale(1) translate(0,0); }
-            100% { transform: scale(1.2) translate(50px, 50px); }
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* =========================================================
-           CORE UI COMPONENTS (Nav, Hero, Grids)
-           =========================================================
-        */
-        nav {
-            position: fixed; top: 0; width: 100%; z-index: 1000;
-            padding: 1rem 3rem; background: var(--nav-bg);
-            backdrop-filter: blur(20px);
+        /* ==========================================================================
+           3. AMBIENT LIQUID ENGINE (Canvas)
+           ========================================================================== */
+        #liquid-canvas {
+            position: fixed; inset: 0; z-index: 0;
+            filter: blur(80px); opacity: 0.6;
+        }
+
+        /* ==========================================================================
+           4. DASHBOARD SPATIAL CONTAINER
+           Creates the 3D depth effect.
+           ========================================================================== */
+        .dashboard-container {
+            position: relative; z-index: 10;
+            width: 380px;
+            perspective: 2000px;
+            display: flex; flex-direction: column; gap: 20px;
+            transform-style: preserve-3d;
+        }
+
+        /* ==========================================================================
+           5. THE GLASS MATERIAL
+           The core component used for all widgets.
+           ========================================================================== */
+        .glass-card {
+            background: var(--glass-panel);
+            backdrop-filter: blur(48px) saturate(240%);
+            -webkit-backdrop-filter: blur(48px) saturate(240%);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            padding: 32px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 1px var(--glass-highlight);
+            transition: transform 0.6s var(--ease-apple), box-shadow 0.6s var(--ease-apple);
+        }
+
+        /* ==========================================================================
+           6. WIDGET: CLOCK & DATE
+           ========================================================================== */
+        .widget-clock { text-align: center; }
+        .clock-date { color: var(--accent-green); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; }
+        .clock-time { font-size: 88px; font-weight: 200; letter-spacing: -4px; margin: 4px 0; }
+        .clock-status { font-size: 14px; opacity: 0.6; display: flex; justify-content: center; gap: 15px; }
+
+        /* ==========================================================================
+           7. WIDGET: PROFILE
+           ========================================================================== */
+        .widget-profile { display: flex; align-items: center; gap: 20px; }
+        .avatar-box { width: 72px; height: 72px; border-radius: 24px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+        .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-text h1 { font-size: 18px; font-weight: 600; }
+        .profile-text p { font-size: 13px; color: var(--text-sub); margin-top: 2px; }
+
+        /* ==========================================================================
+           8. WIDGET: DOCK NAVIGATION
+           ========================================================================== */
+        .nav-dock { display: flex; flex-direction: column; gap: 12px; }
+        .nav-link {
             display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 24px; border-radius: 20px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            text-decoration: none; color: var(--text-main);
+            transition: all 0.4s var(--ease-apple);
         }
-
-        /* [EXTENDED CSS - 250 Lines of Component Logic omitted for length, 
-            see logic below for implementation] */
-            
-        .hero-title {
-            font-size: 6rem; font-weight: 800; letter-spacing: -0.06em;
-            background: linear-gradient(to bottom, #fff, #a1a1a6);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        .nav-link:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: var(--accent-green);
+            transform: translateX(5px);
         }
+        .nav-link span { color: var(--accent-green); font-size: 12px; font-weight: 500; }
 
-        /* ... [Additional 200 lines of CSS for Grid, Staff, Fleet, Footer states] ...
-        */
-
+        /* ==========================================================================
+           9. RESPONSIVE LAYER
+           ========================================================================== */
+        @media (max-width: 480px) {
+            .dashboard-container { width: 92%; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="ambient-layer">
-        <div class="mesh-blob" style="width: 600px; height: 600px; background: #ff3b30; top: -100px; left: -100px;"></div>
-        <div class="mesh-blob" style="width: 500px; height: 500px; background: #007aff; bottom: -100px; right: -100px;"></div>
+    <canvas id="liquid-canvas"></canvas>
+
+    <div class="dashboard-container" id="dash">
+        
+        <section class="glass-card widget-clock">
+            <div class="clock-date" id="date-ui">--</div>
+            <div class="clock-time" id="time-ui">--:--</div>
+            <div class="clock-status">
+                <span id="weather-ui">☁️ 24°C</span>
+                <span style="color: var(--accent-green)">● Online</span>
+            </div>
+        </section>
+
+        <section class="glass-card widget-profile">
+            <div class="avatar-box">
+                <img src="https://cdn.discordapp.com/attachments/1145203205135945768/1510147976176336986/97889-colorful-skyline-boy.png" alt="Aether">
+            </div>
+            <div class="profile-text">
+                <h1>Aether</h1>
+                <p>Aviation & Community Builder</p>
+            </div>
+        </section>
+
+        <nav class="nav-dock">
+            <a href="https://discord.gg/WsPMFdJsWp" class="nav-link">Discord Community <span>Join</span></a>
+            <a href="https://guns.lol/aether_" class="nav-link">Guns.lol Profile <span>View</span></a>
+            <a href="https://avely.me/zeop" class="nav-link">Avely Personal <span>Visit</span></a>
+        </nav>
     </div>
 
-    <nav>
-        <div class="brand">Asiana Airlines PTFS</div>
-        <div class="nav-links">
-            <a href="#about">About</a>
-            <a href="#fleet">Fleet</a>
-            <a href="#staff">Staff</a>
-            <button class="theme-toggle" onclick="toggleTheme()">Appearance</button>
-        </div>
-    </nav>
-
-    <main>
-        <section id="hero" style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-            <h1 class="hero-title">Beautiful People</h1>
-            <p class="subtitle">Experience the pinnacle of PTFS aviation.</p>
-        </section>
-
-        <section id="fleet" style="padding: 100px 20px;">
-            <div id="fleet-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;">
-                </div>
-        </section>
-    </main>
-
     <script>
-        /* =========================================================
-           AETHER OS v4.0 - JAVASCRIPT CORE ENGINE
-           =========================================================
-        */
+        // 1. LIQUID BACKGROUND ENGINE
+        const canvas = document.getElementById('liquid-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = Array.from({length: 12}, () => ({
+            x: Math.random() * 1000,
+            y: Math.random() * 1000,
+            size: Math.random() * 400 + 200,
+            vx: (Math.random() - 0.5) * 0.4,
+            vy: (Math.random() - 0.5) * 0.4
+        }));
 
-        // 1. DATA DRIVEN FLEET MODEL
-        const fleetData = [
-            { name: "Airbus A380-800", desc: "Flagship Ultra-Long-Haul", img: "https://cdn.plnspttrs.net/26228/hl7634-asiana-airlines-airbus-a380-841_PlanespottersNet_1927063_2b3cb05c46_o.jpg" },
-            { name: "Airbus A350-900", desc: "Modern Intercontinental", img: "https://cdn.plnspttrs.net/40206/hl8522-asiana-airlines-airbus-a350-941_PlanespottersNet_1930033_bb310fe3ea_o.jpg" },
-            { name: "Boeing 777-200ER", desc: "Reliable Long-Haul Workhorse", img: "https://cdn.plnspttrs.net/48020/hl7755-asiana-airlines-boeing-777-28eer_PlanespottersNet_1925950_d87468447c_o.jpg" }
-        ];
+        function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
 
-        // 2. RENDERING ENGINE
-        function initApp() {
-            const grid = document.getElementById('fleet-grid');
-            fleetData.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'apple-glass';
-                card.style.padding = '20px';
-                card.innerHTML = `
-                    <div style="height: 200px; background: url('${item.img}') center/cover; border-radius: 16px; margin-bottom: 20px;"></div>
-                    <h3 style="font-size: 1.5rem;">${item.name}</h3>
-                    <p style="color: var(--text-sub); margin-top: 8px;">${item.desc}</p>
-                `;
-                grid.appendChild(card);
+        function render() {
+            ctx.clearRect(0,0,width,height);
+            particles.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < 0 || p.x > width) p.vx *= -1;
+                if(p.y < 0 || p.y > height) p.vy *= -1;
+                const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
+                g.addColorStop(0, 'rgba(48, 209, 88, 0.05)');
+                g.addColorStop(1, 'transparent');
+                ctx.fillStyle = g;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
             });
+            requestAnimationFrame(render);
         }
+        render();
 
-        // 3. THEME ENGINE
-        function toggleTheme() {
-            const html = document.documentElement;
-            const current = html.getAttribute('data-theme');
-            const next = current === 'light' ? 'dark' : 'light';
-            html.setAttribute('data-theme', next);
-            localStorage.setItem('theme', next);
-        }
-
-        // 4. PARALLAX & OBSERVER ENGINE
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting) entry.target.style.opacity = "1";
-            });
+        // 2. TILT PHYSICS ENGINE
+        const dash = document.getElementById('dash');
+        window.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth / 2 - e.clientX) / 40;
+            const y = (window.innerHeight / 2 - e.clientY) / 40;
+            dash.style.transform = `rotateY(${-x}deg) rotateX(${y}deg)`;
         });
 
-        document.querySelectorAll('.apple-glass').forEach(el => {
-            el.style.opacity = "0";
-            el.style.transition = "opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1)";
-            observer.observe(el);
-        });
-
-        // Initialize
-        initApp();
-        console.log("Aether OS: All systems nominal.");
+        // 3. SYSTEM CLOCK
+        function tick() {
+            const n = new Date();
+            document.getElementById('time-ui').innerText = n.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            document.getElementById('date-ui').innerText = n.toLocaleDateString([], {weekday:'short', month:'short', day:'numeric'});
+        }
+        setInterval(tick, 1000); tick();
     </script>
 </body>
 </html>
