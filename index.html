@@ -3,138 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether | Liquid Glass OS</title>
+    <title>Aether OS | Liquid Glass</title>
     <style>
         :root {
-            --apple-bg: #000000;
-            --apple-glass: rgba(255, 255, 255, 0.08);
-            --accent-green: #30d158;
-            --system-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+            --bg-color: #000000;
+            --glass-bg: rgba(255, 255, 255, 0.07);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --accent-color: #32d74b;
+            --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
         }
 
-        * { box-sizing: border-box; cursor: default; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            margin: 0; padding: 0; background: var(--apple-bg);
-            color: #fff; font-family: var(--system-font);
+            background: var(--bg-color);
+            color: white;
+            font-family: var(--font-stack);
             display: flex; justify-content: center; align-items: center;
             min-height: 100vh; overflow: hidden;
         }
 
-        /* ── LIQUID CANVAS LAYER ── */
-        #fluidCanvas {
-            position: fixed; top: 0; left: 0; z-index: 0;
-            width: 100%; height: 100%; pointer-events: none;
-        }
+        /* ── LIQUID CANVAS ── */
+        #fluid-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
 
-        /* ── GLASS ARCHITECTURE ── */
-        .glass-shell {
+        /* ── DASHBOARD SYSTEM ── */
+        .dashboard {
             position: relative; z-index: 1;
-            width: 380px; padding: 48px;
-            background: var(--apple-glass);
-            backdrop-filter: blur(64px) saturate(220%);
-            -webkit-backdrop-filter: blur(64px) saturate(220%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 48px;
-            box-shadow: 
-                0 40px 80px rgba(0,0,0,0.6),
-                inset 0 1px 1px rgba(255,255,255,0.2);
-            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            display: grid; grid-template-columns: 320px; gap: 20px;
+            perspective: 1000px; /* For Tilt Effect */
+            transition: transform 0.2s ease-out;
         }
 
-        .glass-shell:hover { transform: scale(1.01) translateY(-5px); }
-
-        /* ── TYPOGRAPHY HIERARCHY ── */
-        .time-display { font-size: 84px; font-weight: 200; letter-spacing: -4px; margin-bottom: 8px; }
-        .date-display { font-size: 14px; font-weight: 500; color: var(--accent-green); text-transform: uppercase; letter-spacing: 2px; }
-        
-        .profile-section { display: flex; align-items: center; gap: 20px; margin: 32px 0; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 32px; }
-        .avatar-frame { width: 72px; height: 72px; border-radius: 24px; overflow: hidden; background: #111; }
-        .avatar-frame img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* ── INTERACTIVE LINKS ── */
-        .link-container { display: flex; flex-direction: column; gap: 16px; }
-        .btn {
-            padding: 20px 24px; border-radius: 22px;
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
-            color: rgba(255,255,255,0.9); text-decoration: none;
-            display: flex; align-items: center; justify-content: space-between;
-            transition: all 0.3s ease;
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border: 1px solid var(--glass-border);
+            border-radius: 36px;
+            padding: 32px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.2);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .btn:hover { background: rgba(255,255,255,0.1); border-color: var(--accent-green); }
-        .btn span { font-size: 12px; color: var(--accent-green); }
+
+        /* ── TIME & WEATHER MODULE ── */
+        .time-module { text-align: center; }
+        .time { font-size: 72px; font-weight: 200; letter-spacing: -3px; line-height: 1; }
+        .date { color: var(--accent-color); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
+        .weather { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 15px; opacity: 0.8; }
+
+        /* ── PROFILE MODULE ── */
+        .profile-module { display: flex; align-items: center; gap: 20px; }
+        .avatar { width: 64px; height: 64px; border-radius: 20px; overflow: hidden; background: #111; }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .info h1 { font-size: 18px; font-weight: 600; }
+        .info p { font-size: 13px; opacity: 0.5; }
+
+        /* ── LINK SYSTEM ── */
+        .link-row { display: flex; flex-direction: column; gap: 12px; }
+        .link-btn {
+            background: rgba(255,255,255,0.04);
+            padding: 16px 20px; border-radius: 20px;
+            text-decoration: none; color: white; display: flex;
+            justify-content: space-between; border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s;
+        }
+        .link-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--accent-color); transform: scale(1.02); }
+
+        /* ── ANIMATIONS ── */
+        .pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
     </style>
 </head>
 <body>
 
-    <canvas id="fluidCanvas"></canvas>
+    <canvas id="fluid-bg"></canvas>
 
-    <div class="glass-shell" id="app">
-        <div class="date-display" id="date">Saturday, May 30</div>
-        <div class="time-display" id="time">00:00</div>
-
-        <div class="profile-section">
-            <div class="avatar-frame">
-                <img src="https://cdn.discordapp.com/attachments/1145203205135945768/1510147976176336986/97889-colorful-skyline-boy.png" alt="Aether">
-            </div>
-            <div>
-                <div style="font-size: 20px; font-weight: 600;">Aether</div>
-                <div style="font-size: 13px; opacity: 0.5;">Aviation & Community Builder</div>
+    <div class="dashboard" id="dashboard">
+        <div class="glass-card time-module">
+            <div class="date" id="date">Saturday · May 30</div>
+            <div class="time" id="time">00:00</div>
+            <div class="weather">
+                <span>☁️ 24°C</span>
+                <span class="pulse" style="color: var(--accent-color)">● Online</span>
             </div>
         </div>
 
-        <div class="link-container">
-            <a href="#" class="btn">Discord Community <span>01</span></a>
-            <a href="#" class="btn">Guns.lol Profile <span>02</span></a>
-            <a href="#" class="btn">Avely Personal <span>03</span></a>
+        <div class="glass-card profile-module">
+            <div class="avatar"><img src="https://cdn.discordapp.com/attachments/1145203205135945768/1510147976176336986/97889-colorful-skyline-boy.png" alt="Aether"></div>
+            <div class="info">
+                <h1>Aether</h1>
+                <p>Aviation & Community Builder</p>
+            </div>
+        </div>
+
+        <div class="link-row">
+            <a href="https://discord.gg/WsPMFdJsWp" class="link-btn">Discord Community <span>↗</span></a>
+            <a href="https://guns.lol/aether_" class="link-btn">guns.lol/aether_ <span>↗</span></a>
+            <a href="https://avely.me/zeop" class="link-btn">avely.me/zeop <span>↗</span></a>
         </div>
     </div>
 
     <script>
-        // ── FLUID BACKGROUND ENGINE ──
-        const canvas = document.getElementById('fluidCanvas');
+        // ── FLUID ENGINE ──
+        const canvas = document.getElementById('fluid-bg');
         const ctx = canvas.getContext('2d');
-        let particles = [];
-        
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.onresize = resize; resize();
+        let width, height;
+        const particles = Array.from({length: 8}, () => ({
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+            size: Math.random() * 300 + 100,
+            speedX: (Math.random() - 0.5) * 0.5,
+            speedY: (Math.random() - 0.5) * 0.5
+        }));
 
-        class Particle {
-            constructor() { this.reset(); }
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 200 + 100;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-            }
-            draw() {
-                const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
-                grad.addColorStop(0, 'rgba(48, 209, 88, 0.08)');
+        function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
+
+        function draw() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.x += p.speedX; p.y += p.speedY;
+                if (p.x < 0 || p.x > width) p.speedX *= -1;
+                if (p.y < 0 || p.y > height) p.speedY *= -1;
+                const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
+                grad.addColorStop(0, 'rgba(50, 215, 75, 0.05)');
                 grad.addColorStop(1, 'transparent');
                 ctx.fillStyle = grad;
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
-            }
-        }
-
-        for(let i=0; i<5; i++) particles.push(new Particle());
-        
-        function animate() {
-            ctx.clearRect(0,0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.x += p.vx; p.y += p.vy;
-                if(p.x < -200 || p.x > canvas.width + 200 || p.y < -200 || p.y > canvas.height + 200) p.reset();
-                p.draw();
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
             });
-            requestAnimationFrame(animate);
+            requestAnimationFrame(draw);
         }
-        animate();
+        draw();
 
-        // ── SYSTEM CLOCK ──
-        setInterval(() => {
-            const n = new Date();
-            document.getElementById('time').innerText = n.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-        }, 1000);
+        // ── INTERACTION ──
+        const dash = document.getElementById('dashboard');
+        document.addEventListener('mousemove', (e) => {
+            const { clientX, clientY } = e;
+            const x = (clientX / window.innerWidth - 0.5) * 20;
+            const y = (clientY / window.innerHeight - 0.5) * 20;
+            dash.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+        });
+
+        // ── CLOCK ──
+        function update() {
+            const now = new Date();
+            document.getElementById('time').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }
+        setInterval(update, 1000); update();
     </script>
 </body>
 </html>
