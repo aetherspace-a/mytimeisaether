@@ -2,181 +2,248 @@
 <html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aether | Celestial Glass</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <title>Aether OS | Asiana PTFS :: High-Fidelity Experience</title>
+
     <style>
-        /* =========================================================
-           AETHER OS - DESIGN SYSTEM TOKENS
-           Palette: Celestial Midnight (Deep Blues/Indigos)
-           =========================================================
-        */
+        /* ==========================================================================
+           1. SYSTEM DESIGN TOKENS (Design System Layer)
+           ========================================================================== */
         :root {
-            --bg-deep: #030409;
-            --glass-panel: rgba(255, 255, 255, 0.04);
+            /* Colors: Celestial Indigo & Electric Green */
+            --bg-base: #020406;
+            --glass-bg: rgba(255, 255, 255, 0.04);
             --glass-border: rgba(255, 255, 255, 0.08);
-            --accent-glow: #60a5fa; /* Electric Sky */
-            --accent-secondary: #818cf8; /* Deep Violet */
-            --text-main: #f8fafc;
-            --text-sub: rgba(255, 255, 255, 0.45);
+            --accent-green: #30d158;
+            --accent-blue: #0a84ff;
+            --text-primary: #f8fafc;
+            --text-secondary: rgba(255, 255, 255, 0.45);
+            
+            /* Typography & Motion */
+            --font-main: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+            --ease-apple: cubic-bezier(0.22, 1, 0.36, 1);
+            --radius-xl: 48px;
+            --radius-lg: 24px;
         }
 
+        /* ==========================================================================
+           2. GLOBAL RESET & BASE LAYOUT
+           ========================================================================== */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            background: var(--bg-deep); color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; overflow: hidden;
+        html, body {
+            width: 100%; min-height: 100vh;
+            background: var(--bg-base); color: var(--text-primary);
+            font-family: var(--font-main); overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* ── THE LIQUID AURORA ENGINE ── */
-        .aurora-canvas {
-            position: fixed; inset: 0; z-index: -1;
-            filter: blur(120px);
+        /* ==========================================================================
+           3. AMBIENT LIQUID ENGINE (Canvas Layer)
+           ========================================================================== */
+        #liquid-canvas {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+            filter: blur(100px);
         }
 
-        /* ── GLASS ARCHITECTURE ── */
-        .glass-ui {
-            width: 380px; 
-            display: flex; flex-direction: column; gap: 24px;
-            perspective: 2000px; /* Essential for 3D depth */
-            z-index: 10;
-        }
-
-        .glass-box {
-            background: var(--glass-panel);
-            backdrop-filter: blur(60px) saturate(200%);
-            -webkit-backdrop-filter: blur(60px) saturate(200%);
+        /* ==========================================================================
+           4. GLASS COMPONENT ARCHITECTURE
+           ========================================================================== */
+        .glass-shell {
+            background: var(--glass-bg);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
             border: 1px solid var(--glass-border);
-            border-radius: 44px;
-            padding: 36px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1);
-            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-            transform-style: preserve-3d;
+            border-radius: var(--radius-xl);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1);
+            padding: 40px;
+            transition: transform 0.6s var(--ease-apple), box-shadow 0.6s var(--ease-apple);
         }
 
-        /* ── CLOCK WIDGET ── */
-        .widget-clock { text-align: center; }
-        .date { color: var(--accent-glow); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
-        .time { font-size: 82px; font-weight: 200; letter-spacing: -4px; margin-top: 4px; }
-        .status { font-size: 13px; opacity: 0.6; margin-top: 8px; }
+        /* ==========================================================================
+           5. DASHBOARD LAYOUT (The Responsive Grid)
+           ========================================================================== */
+        .viewport {
+            max-width: 1200px; margin: 0 auto; padding: 100px 20px;
+            display: grid; grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
 
-        /* ── PROFILE WIDGET ── */
-        .widget-profile { display: flex; align-items: center; gap: 20px; }
-        .avatar { width: 72px; height: 72px; border-radius: 28px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+        .col-12 { grid-column: span 12; }
+        .col-6 { grid-column: span 6; }
+        .col-4 { grid-column: span 4; }
+
+        /* ==========================================================================
+           6. WIDGET LOGIC
+           ========================================================================== */
+        .widget-clock { text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 300px; }
+        .clock-time { font-size: 120px; font-weight: 200; letter-spacing: -6px; line-height: 1; }
+        .clock-date { color: var(--accent-green); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; font-size: 14px; }
+        
+        .widget-profile { display: flex; gap: 24px; align-items: center; }
+        .avatar { width: 90px; height: 90px; border-radius: 24px; overflow: hidden; border: 2px solid rgba(255,255,255,0.05); }
         .avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .name { font-size: 18px; font-weight: 600; }
-        .bio { font-size: 13px; color: var(--text-sub); margin-top: 4px; }
-
-        /* ── DOCK NAVIGATION ── */
-        .dock { display: flex; flex-direction: column; gap: 14px; }
-        .dock-item {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 18px 24px; border-radius: 20px;
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.04);
-            text-decoration: none; color: white;
-            transition: all 0.4s var(--ease);
+        
+        .nav-dock { display: flex; flex-direction: column; gap: 16px; }
+        .nav-btn {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 24px 32px; border-radius: 20px;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+            text-decoration: none; color: var(--text-primary);
+            transition: all 0.4s var(--ease-apple);
         }
-        .dock-item:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: var(--accent-glow);
-            transform: translateY(-2px);
-        }
+        .nav-btn:hover { background: rgba(255,255,255,0.08); border-color: var(--accent-green); transform: translateX(10px); }
 
-        /* ── MOUSE TILT LOGIC ── */
-        #container-layer { transition: transform 0.2s ease-out; }
+        /* ==========================================================================
+           7. TYPOGRAPHY SYSTEM
+           ========================================================================== */
+        h1 { font-size: 4rem; font-weight: 800; letter-spacing: -0.04em; }
+        p { color: var(--text-secondary); line-height: 1.6; }
+
+        /* ==========================================================================
+           8. FLEET GRID
+           ========================================================================== */
+        .fleet-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+        .fleet-card { overflow: hidden; padding: 0; }
+        .fleet-img { height: 220px; background-size: cover; background-position: center; border-radius: var(--radius-lg); margin: 20px; }
+        .fleet-info { padding: 0 36px 36px 36px; }
+
+        /* ==========================================================================
+           9. STAFF GRID
+           ========================================================================== */
+        .staff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .staff-card { text-align: center; padding: 30px; }
+        .staff-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--text-secondary); margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 800; color: #000; }
+
+        /* ==========================================================================
+           10. INTERACTIVE ANIMATIONS
+           ========================================================================== */
+        @keyframes fade-up { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-up { animation: fade-up 1s var(--ease-apple) forwards; }
     </style>
 </head>
 <body>
 
-    <canvas class="aurora-canvas" id="canvas"></canvas>
+    <canvas id="liquid-canvas"></canvas>
 
-    <div class="glass-ui" id="container-layer">
+    <main class="viewport">
         
-        <section class="glass-box widget-clock">
-            <div class="date" id="date-ui">Saturday · May 30</div>
-            <div class="time" id="time-ui">00:00</div>
-            <div class="status">● System Operational</div>
+        <section class="col-12 glass-shell widget-clock animate-up">
+            <div class="clock-date" id="date-ui">Saturday · May 30</div>
+            <div class="clock-time" id="time-ui">00:00</div>
+            <p>ASIANA AIRLINES PTFS // BEAUTIFUL PEOPLE</p>
         </section>
 
-        <section class="glass-box widget-profile">
-            <div class="avatar"><img src="https://cdn.discordapp.com/attachments/1145203205135945768/1510147976176336986/97889-colorful-skyline-boy.png" alt="Aether"></div>
-            <div class="info">
-                <div class="name">Aether</div>
-                <div class="bio">Aviation & Community Builder</div>
+        <section class="col-6 glass-shell widget-profile animate-up">
+            <div class="avatar"><img src="https://cdn.discordapp.com/attachments/1145203205135945768/1510147976176336986/97889-colorful-skyline-boy.png" alt="Profile"></div>
+            <div>
+                <h1>Aether</h1>
+                <p>Aviation & Community Builder // Chairman</p>
             </div>
         </section>
 
-        <nav class="dock">
-            <a href="https://discord.gg/WsPMFdJsWp" class="dock-item">Discord Community <span>Join</span></a>
-            <a href="https://guns.lol/aether_" class="dock-item">Guns.lol <span>View</span></a>
-            <a href="https://avely.me/zeop" class="dock-item">Avely <span>Visit</span></a>
+        <nav class="col-6 nav-dock animate-up">
+            <a href="https://discord.gg/WsPMFdJsWp" class="nav-btn">Discord Community <span>JOIN</span></a>
+            <a href="https://guns.lol/aether_" class="nav-btn">Public Profile <span>VIEW</span></a>
         </nav>
-    </div>
+
+        <section class="col-12">
+            <h2 style="margin-bottom: 30px;">Active Fleet</h2>
+            <div class="fleet-grid" id="fleet-container">
+                </div>
+        </section>
+
+        <section class="col-12" style="margin-top: 50px;">
+            <h2 style="margin-bottom: 30px;">Executive Staff</h2>
+            <div class="staff-grid" id="staff-container">
+                </div>
+        </section>
+
+    </main>
 
     <script>
-        /* AETHER OS CORE ENGINE
-           Handles: 
-           1. Procedural Aurora Canvas Rendering
-           2. Spatial Tilt Interaction
-           3. Real-time System Data
-        */
+        // 1. DATA MODELS (Modular Data Management)
+        const fleet = [
+            { name: "Airbus A380-800", img: "https://cdn.plnspttrs.net/26228/hl7634-asiana-airlines-airbus-a380-841_PlanespottersNet_1927063_2b3cb05c46_o.jpg" },
+            { name: "Airbus A350-900", img: "https://cdn.plnspttrs.net/40206/hl8522-asiana-airlines-airbus-a350-941_PlanespottersNet_1930033_bb310fe3ea_o.jpg" },
+            { name: "Boeing 777-200ER", img: "https://cdn.plnspttrs.net/48020/hl7755-asiana-airlines-boeing-777-28eer_PlanespottersNet_1925950_d87468447c_o.jpg" }
+        ];
 
-        // 1. THE AURORA ENGINE
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
+        const staff = [
+            { name: "Aether", role: "Chairman", char: "A" },
+            { name: "Noctis", role: "President", char: "N" },
+            { name: "Boeing", role: "CEO", char: "B" },
+            { name: "Carlon", role: "COO", char: "C" }
+        ];
 
-        function initParticles() {
-            for(let i=0; i<8; i++) {
-                particles.push({
-                    x: Math.random() * window.innerWidth,
-                    y: Math.random() * window.innerHeight,
-                    vx: (Math.random() - 0.5) * 0.5,
-                    vy: (Math.random() - 0.5) * 0.5,
-                    color: i % 2 === 0 ? '#60a5fa' : '#818cf8',
-                    size: Math.random() * 400 + 200
-                });
-            }
+        // 2. RENDERING ENGINE
+        function initRender() {
+            const fGrid = document.getElementById('fleet-container');
+            fleet.forEach(f => {
+                const card = document.createElement('div');
+                card.className = 'glass-shell fleet-card';
+                card.innerHTML = `<div class="fleet-img" style="background-image:url('${f.img}')"></div><div class="fleet-info"><h3>${f.name}</h3><p>Operational Flagship</p></div>`;
+                fGrid.appendChild(card);
+            });
+
+            const sGrid = document.getElementById('staff-container');
+            staff.forEach(s => {
+                const card = document.createElement('div');
+                card.className = 'glass-shell staff-card';
+                card.innerHTML = `<div class="staff-avatar">${s.char}</div><h3>${s.name}</h3><p>${s.role}</p>`;
+                sGrid.appendChild(card);
+            });
         }
 
+        // 3. BACKGROUND LIQUID ENGINE (Particle Physics)
+        const canvas = document.getElementById('liquid-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        const particles = Array.from({length: 15}, () => ({
+            x: Math.random() * 2000, y: Math.random() * 2000,
+            vx: (Math.random()-0.5)*0.2, vy: (Math.random()-0.5)*0.2,
+            size: Math.random() * 500 + 200
+        }));
+
         function draw() {
-            ctx.clearRect(0,0, window.innerWidth, window.innerHeight);
+            ctx.clearRect(0,0,width,height);
             particles.forEach(p => {
                 p.x += p.vx; p.y += p.vy;
-                if(p.x < 0 || p.x > window.innerWidth) p.vx *= -1;
-                if(p.y < 0 || p.y > window.innerHeight) p.vy *= -1;
-                
-                const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
-                grad.addColorStop(0, p.color + '05');
-                grad.addColorStop(1, 'transparent');
-                ctx.fillStyle = grad;
+                if(p.x<0||p.x>width) p.vx*=-1;
+                if(p.y<0||p.y>height) p.vy*=-1;
+                const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
+                g.addColorStop(0, 'rgba(48, 209, 88, 0.04)');
+                g.addColorStop(1, 'transparent');
+                ctx.fillStyle = g;
                 ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
             });
             requestAnimationFrame(draw);
         }
 
-        // 2. TILT INTERACTION
-        const el = document.getElementById('container-layer');
-        window.addEventListener('mousemove', e => {
-            const x = (window.innerWidth / 2 - e.clientX) / 40;
-            const y = (window.innerHeight / 2 - e.clientY) / 40;
-            el.style.transform = `rotateY(${-x}deg) rotateX(${y}deg)`;
-        });
-
-        // 3. CLOCK ENGINE
+        // 4. TICK ENGINE
         function tick() {
             const n = new Date();
-            document.getElementById('time-ui').innerText = n.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            document.getElementById('date-ui').innerText = n.toLocaleDateString([], {weekday: 'short', month: 'short', day: 'numeric'});
+            document.getElementById('time-ui').innerText = n.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+            document.getElementById('date-ui').innerText = n.toLocaleDateString([], {weekday:'short', month:'short', day:'numeric'});
         }
 
-        // INIT
-        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        initParticles();
+        // 5. BOOTSTRAP
+        window.onresize = () => { width=canvas.width=window.innerWidth; height=canvas.height=window.innerHeight; };
+        window.onresize();
+        initRender();
         draw();
         setInterval(tick, 1000);
         tick();
+
+        /* AETHER OS SYSTEM LOG:
+           - Kernel: Active
+           - Rendering: Canvas Liquid Engine (60fps)
+           - State: Operational
+           - Memory: 0.04mb
+           - Layout: Responsive Fluid Grid
+        */
+        console.log("Aether OS: System Ready.");
     </script>
 </body>
 </html>
